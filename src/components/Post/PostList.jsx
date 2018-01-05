@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
+import { Pagination } from '../common'
 
 class PostList extends Component {
   constructor(props) {
@@ -60,10 +61,15 @@ class PostList extends Component {
     ))
   }
 
+  renderPagination() {
+    return <Pagination />
+  }
+
   render() {
     return (
       <div className="content_container">
         {this.renderPost()}
+        {this.renderPagination()}
       </div>
     )
   }

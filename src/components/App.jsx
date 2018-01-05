@@ -67,8 +67,11 @@ class App extends Component {
           <div className="pure-u-1-4 hidden_mid_and_down">
             <Sidebar />
           </div>
+          <div className="pure-u-1 pure-u-md-3-4" >
+            <Footer />
+          </div>
         </div>
-        <Footer />
+
       </div>
     );
   }
