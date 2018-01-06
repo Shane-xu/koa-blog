@@ -15,6 +15,11 @@ export default {
       getComponent(nextState, cb) {
         cb(null, require('../containers/Post').PostPage)
       }
+    }, {
+      path: 'archives',
+      getComponent(nextState, cb) {
+        cb(null, require('../containers/Archive').ArchivePage)
+      }
     }]
   }]
 }

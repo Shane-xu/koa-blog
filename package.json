@@ -15,7 +15,6 @@
     "github-markdown-css": "^2.9.0",
     "lodash": "^4.17.4",
     "marked": "^0.3.7",
-    "moment": "^2.18.1",
     "path-to-regexp": "^2.1.0",
     "prop-types": "^15.5.10",
     "react": "^15.6.0",
