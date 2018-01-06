@@ -20,6 +20,11 @@ export default {
       getComponent(nextState, cb) {
         cb(null, require('../containers/Archive').ArchivePage)
       }
+    }, {
+      path: 'about',
+      getComponent(nextState, cb) {
+        cb(null, require('../containers/About').AboutPage)
+      }
     }]
   }]
 }
