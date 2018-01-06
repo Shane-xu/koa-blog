@@ -361,7 +361,7 @@ div {
         display: inline-block;
         margin: 0 5px 5px 0;
     }
-    a, span {
+    button, span {
         display: inline-block;
         height: 25px;
         line-height: 25px;
@@ -369,6 +369,7 @@ div {
         border: 1px solid #DDD;
         text-align: center;
         &:hover {
+            cursor: pointer;
             background: #F8F8F8;
             border-bottom-color: #D26911;
         }

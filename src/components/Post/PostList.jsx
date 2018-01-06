@@ -62,7 +62,12 @@ class PostList extends Component {
   }
 
   renderPagination() {
-    return <Pagination />
+    return (
+      <Pagination
+        current={1}
+        total={30}
+      />
+    )
   }
 
   render() {
