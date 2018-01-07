@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "blog front",
   "scripts": {
-    "dev": "NODE_ENV=development NODE_TYPE=integration webpack-dev-server --progress --colors --port 3002 --host 0.0.0.0 --config webpack.dev.config.js --devtool source-map ",
+    "dev": "NODE_ENV=development NODE_TYPE=integration webpack-dev-server --progress --colors --port 3001 --host 0.0.0.0 --config webpack.dev.config.js --devtool source-map ",
     "build": "rm -rf build && NODE_ENV=production webpack --progress --colors"
   },
   "author": "suuperman",

@@ -7,15 +7,14 @@ import {
 import {
   Post
 } from '../../components/Post';
+import * as actionCreators from '../../actions'
 
-
-function mapState2Props() {
-  return {};
-}
 
 function mapDispatch2Props(dispatch) {
-  // const actions = bindActionCreators(actionCreators, dispatch)
-  return {}
+  const actions = bindActionCreators(actionCreators, dispatch)
+  return {
+    fetchPostById: actions.fetchPostById
+  }
 }
 
-export default connect(mapState2Props, mapDispatch2Props)(Post)
+export default connect(null, mapDispatch2Props)(Post)

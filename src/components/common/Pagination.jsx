@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import {
-  CURRENT,
+  PAGE,
   PAGE_SIZE
 } from '../../constants/Pagination'
 
 const propTypes = {
   // 当前页数
-  current: PropTypes.number,
+  page: PropTypes.number,
   // 每页条数
   pageSize: PropTypes.number,
   // 总数
@@ -18,7 +18,7 @@ const propTypes = {
 }
 
 const defaultProps = {
-  current: CURRENT,
+  page: PAGE,
   pageSize: PAGE_SIZE,
 }
 
@@ -26,43 +26,43 @@ class Pagination extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      current: props.current
+      page: props.page
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.current !== this.props.current) {
+    if (nextProps.page !== this.props.page) {
       this.setState({
-        current: nextProps.current
+        page: nextProps.page
       })
     }
   }
 
-  handleOnchange = (current) => {
+  handleOnchange = (page) => {
     const { onChange } = this.props
-    if (typeof current !== 'number') {
-      throw new Error('current should be number')
+    if (typeof page !== 'number') {
+      throw new Error('page should be number')
     }
     this.setState({
-      current
+      page
     })
-    onChange && onChange(current)
+    onChange && onChange(page)
   }
 
   handlePrev = () => {
-    const { current } = this.state
-    const nextCurrent = current - 1
-    this.handleOnchange(nextCurrent)
+    const { page } = this.state
+    const nextpage = page - 1
+    this.handleOnchange(nextpage)
   }
 
   handleNext = () => {
-    const { current } = this.state
-    const nextCurrent = current + 1
-    this.handleOnchange(nextCurrent)
+    const { page } = this.state
+    const nextpage = page + 1
+    this.handleOnchange(nextpage)
   }
 
   renderNumbers() {
-    const { current } = this.state
+    const { page } = this.state
     const { pageSize, total } = this.props;
     const length = Math.ceil(total / pageSize);
     const items = []
@@ -70,10 +70,10 @@ class Pagination extends Component {
       items.push(i)
     }
     return items.map((index) => {
-      const isActive = index === current
+      const isActive = index === page
       let cls = classNames({
         'page-number': true,
-        current: isActive,
+        page: isActive,
       })
       return (
         isActive ?
@@ -91,8 +91,8 @@ class Pagination extends Component {
   }
 
   renderPrev() {
-    const { current } = this.state
-    return current > 1 ?
+    const { page } = this.state
+    return page > 1 ?
       (
         <span
           className="extend prev"
@@ -105,10 +105,10 @@ class Pagination extends Component {
   }
 
   renderNext() {
-    const { current } = this.state
+    const { page } = this.state
     const { total, pageSize } = this.props
     const length = Math.ceil(total / pageSize);
-    return current < length ?
+    return page < length ?
       (
         <span
           className="extend next"
