@@ -8,7 +8,7 @@ class Header extends Component {
       navs: [
         {
           name: '首页',
-          link: '/',
+          link: '/posts',
           icon: 'home'
         },
         {
@@ -29,7 +29,7 @@ class Header extends Component {
     return navs.map((nav) => {
       const iconClass = `fa fa-${nav.icon}`
       return (
-        <Link to={nav.link} key={nav.name}>
+        <Link to={nav.link} key={nav.name} activeClassName="current">
           <i className={iconClass}>{nav.name}</i>
         </Link>
       )
