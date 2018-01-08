@@ -1,42 +1,45 @@
 import React, { Component } from 'react'
 import { format } from 'date-fns'
 import { CONF_DATE } from '../../constants/Conf'
+import { Pagination } from '../common'
+import {
+  PAGE,
+  PAGE_SIZE
+} from '../../constants/Pagination'
 
 class Archive extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      posts: [{
-        id: 1,
-        title: 'post1',
-        createTime: Date.now()
-      }, {
-        id: 2,
-        title: 'post2',
-        createTime: Date.now()
-      }, {
-        id: 3,
-        title: 'post3',
-        createTime: Date.now()
-      }, {
-        id: 4,
-        title: 'post4',
-        createTime: Date.now()
-      }, {
-        id: 5,
-        title: 'post5',
-        createTime: Date.now()
-      }, {
-        id: 6,
-        title: 'post6',
-        createTime: Date.now()
-      }, {
-        id: 7,
-        title: 'post7',
-        createTime: Date.now()
-      }]
+      params: {
+        page: PAGE,
+        pageSize: PAGE_SIZE,
+        total: 0,
+      },
+      posts: []
     }
   }
+  componentWillMount() {
+    this.loadPostData()
+  }
+
+  loadPostData = (params) => {
+    const { fetchPosts } = this.props
+    fetchPosts && fetchPosts(params || this.state.params)
+      .then((response) => {
+        this.setState({
+          params: response.page,
+          posts: response.items,
+        })
+      })
+      .catch(err => console.error(err))
+  }
+
+  handlePaginationChange = (page) => {
+    const nextParams = { ...this.state.params, page }
+    this.loadPostData(nextParams)
+  }
+
   renderList() {
     const { posts } = this.state
     return posts.map(post => (
@@ -50,6 +53,16 @@ class Archive extends Component {
       </li>
     ))
   }
+  renderPagination() {
+    const { page, total } = this.state.params
+    return (
+      <Pagination
+        page={page}
+        total={total}
+        onChange={this.handlePaginationChange}
+      />
+    )
+  }
 
   render() {
     return (
@@ -61,6 +74,7 @@ class Archive extends Component {
             </ul>
           </div>
         </div>
+        {this.renderPagination()}
       </div>
     )
   }

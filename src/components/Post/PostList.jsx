@@ -42,6 +42,11 @@ class PostList extends Component {
       .catch(err => console.error(err))
   }
 
+  handlePaginationChange = (page) => {
+    const nextParams = { ...this.state.params, page }
+    this.loadPostData(nextParams)
+  }
+
   renderPost() {
     const { posts } = this.state
     return posts.map(post => (
@@ -74,6 +79,7 @@ class PostList extends Component {
       <Pagination
         page={page}
         total={total}
+        onChange={this.handlePaginationChange}
       />
     )
   }
