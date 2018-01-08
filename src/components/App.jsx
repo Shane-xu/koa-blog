@@ -3,9 +3,13 @@ import PropTypes from 'prop-types'
 import Header from './Header'
 import Footer from './Footer'
 import Sidebar from './Sidebar'
-import Loading from './common/Loading'
+import { Loading } from './common'
 
 const propTypes = {
+  tags: PropTypes.array,
+  categories: PropTypes.array,
+  fetchTags: PropTypes.func,
+  fetchCategories: PropTypes.func
 };
 
 const contextTypes = {
@@ -31,32 +35,30 @@ class App extends Component {
   }
 
   initData = () => {
-    // const init = []
-    // init.push(new Promise((resolve) => {
-    //   loggedIn() && fetchMenu().then(resolve);
-    // }))
-
-    // Promise.all(init)
-    //   .then(() => {
-    //     this.setState({ ready: true })
-    //   })
-  }
-
-  handleOnToggle = () => {
-    this.setState({
-      collapsed: !this.state.collapsed,
-    });
-  }
-
-  renderLoading() {
-    return (
-      <Loading />
-    )
+    const { fetchTags, fetchCategories } = this.props
+    const init = []
+    init.push(new Promise((resolve) => {
+      fetchTags().then(resolve);
+    }))
+    init.push(new Promise((resolve) => {
+      fetchCategories().then(resolve);
+    }))
+    Promise.all(init)
+      .then(() => {
+        this.setState({ ready: true })
+      })
   }
 
   render() {
-    const { children } = this.props;
-
+    const { ready } = this.state
+    const {
+      children,
+      tags,
+      categories,
+    } = this.props;
+    if (!ready) {
+      return <Loading />
+    }
     return (
       <div className="body_container">
         <Header />
@@ -65,7 +67,10 @@ class App extends Component {
             {children}
           </div>
           <div className="pure-u-1-4 hidden_mid_and_down">
-            <Sidebar />
+            <Sidebar
+              tags={tags}
+              categories={categories}
+            />
           </div>
           <div className="pure-u-1 pure-u-md-3-4" >
             <Footer />

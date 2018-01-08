@@ -30,16 +30,16 @@ const tags = [
     name: 'tag7'
   },
 ]
-const Tag = () => (
+const Tag = (props) => (
   <div className="widget" >
     <div className="widget-title" >
       <i className="fa fa-star-o" >标签</i>
     </div>
     <div className="tagcloud" >
-      {tags.map(tag => (
+      {props.tags.map(tag => (
         <a
           href="#"
-          key={tag.id}
+          key={tag._id}
           style={{ fontSize: 15 }}
         >
           {tag.name}
