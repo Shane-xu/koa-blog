@@ -2,7 +2,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import marked from 'marked'
 import { format } from 'date-fns'
+import hljs from 'highlight.js'
 import { CONF_DATE } from '../../constants/Conf'
+
+marked.setOptions({
+  highlight: code => hljs.highlightAuto(code).value,
+})
 
 const propTypes = {
   params: PropTypes.object,
