@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import { Provider } from 'react-redux'
-import { Router, hashHistory } from 'react-router'
+import { Router, browserHistory } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import axios from './axios'
 import reducers from './reducers'
@@ -29,7 +29,7 @@ const store = createStore(
   }), applyMiddleware(...middlewares)
 );
 
-const history = syncHistoryWithStore(hashHistory, store);
+const history = syncHistoryWithStore(browserHistory, store);
 
 ReactDOM.render((
   <Provider store={store}>
