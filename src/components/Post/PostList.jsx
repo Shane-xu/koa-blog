@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router'
 import { format } from 'date-fns'
-import { Pagination } from '../common'
+import {
+  Pagination,
+  Loading,
+} from '../common'
 import { CONF_DATE } from '../../constants/Conf'
 import {
   PAGE,
@@ -22,7 +25,8 @@ class PostList extends Component {
         pageSize: PAGE_SIZE,
         total: 0,
       },
-      posts: []
+      posts: [],
+      loading: true,
     }
   }
 
@@ -37,6 +41,7 @@ class PostList extends Component {
         this.setState({
           params: response.page,
           posts: response.items,
+          loading: false,
         })
       })
       .catch(err => console.error(err))
@@ -85,6 +90,10 @@ class PostList extends Component {
   }
 
   render() {
+    const { loading } = this.state
+    if (loading) {
+      return <Loading />
+    }
     return (
       <div className="content_container">
         {this.renderPost()}

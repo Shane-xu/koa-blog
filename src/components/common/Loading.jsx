@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default () => (
-  <div className="loading">
+  <div className="loader">
     Loading...
   </div>
 )

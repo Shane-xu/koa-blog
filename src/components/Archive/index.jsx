@@ -4,7 +4,10 @@ import _ from 'lodash'
 import { format } from 'date-fns'
 import { Link } from 'react-router'
 import { CONF_DATE } from '../../constants/Conf'
-import { Pagination } from '../common'
+import {
+  Pagination,
+  Loading,
+} from '../common'
 import {
   PAGE,
   PAGE_SIZE
@@ -26,12 +29,16 @@ class Archive extends Component {
         tag: location.query.tag,
         category: location.query.category
       },
-      posts: []
+      posts: [],
+      loading: true,
     }
   }
-  // componentWillMount() {
-  //   this.loadPostData()
-  // }
+  componentWillMount() {
+    const { query } = this.props.location
+    if (_.isUndefined(query.tag) || _.isUndefined(query.category)) {
+      this.loadPostData()
+    }
+  }
 
   componentWillReceiveProps(nextProps) {
     const { query } = nextProps.location
@@ -60,6 +67,7 @@ class Archive extends Component {
         this.setState({
           params: response.page,
           posts: response.items,
+          loading: false,
         })
       })
       .catch(err => console.error(err))
@@ -95,6 +103,11 @@ class Archive extends Component {
   }
 
   render() {
+    const { loading } = this.state
+
+    if (loading) {
+      return <Loading />
+    }
     return (
       <div className="content_container" >
         <div className="post" >

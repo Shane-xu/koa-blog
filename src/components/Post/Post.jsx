@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import marked from 'marked'
 import { format } from 'date-fns'
 import hljs from 'highlight.js'
+import { Loading } from '../common'
 import { CONF_DATE } from '../../constants/Conf'
 
 marked.setOptions({
@@ -18,7 +19,8 @@ class Post extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      post: {}
+      post: {},
+      loading: true,
     }
   }
 
@@ -34,7 +36,8 @@ class Post extends Component {
     fetchPostById && fetchPostById(params.id)
       .then((res) => {
         this.setState({
-          post: res.post
+          post: res.post,
+          loading: false,
         })
       })
   }
@@ -51,7 +54,11 @@ class Post extends Component {
   }
 
   render() {
-    const { post } = this.state
+    const { post, loading } = this.state
+
+    if (loading) {
+      return <Loading />
+    }
     return (
       <div className="content_container" >
         <div className="post" >
