@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import { format } from 'date-fns'
+import { Link } from 'react-router'
 import { CONF_DATE } from '../../constants/Conf'
 import { Pagination } from '../common'
 import {
@@ -28,13 +29,13 @@ class Archive extends Component {
       posts: []
     }
   }
-  componentWillMount() {
-    this.loadPostData()
-  }
+  // componentWillMount() {
+  //   this.loadPostData()
+  // }
 
   componentWillReceiveProps(nextProps) {
-    const { query } = nextProps
-    if (query !== this.props.location.query) {
+    const { query } = nextProps.location
+    if (_.isEqual(query, this.props.location.query)) {
       let nextParams = {
         ...this.state.params,
         ...{
@@ -50,9 +51,11 @@ class Archive extends Component {
     }
   }
 
-  loadPostData = (params) => {
+  loadPostData = (params = this.state.params) => {
     const { fetchPosts } = this.props
-    fetchPosts && fetchPosts(params || this.state.params)
+
+    const nextParams = _.omit(params, 'total')
+    fetchPosts && fetchPosts(nextParams)
       .then((response) => {
         this.setState({
           params: response.page,
@@ -64,7 +67,6 @@ class Archive extends Component {
 
   handlePaginationChange = (page) => {
     let nextParams = { ...this.state.params, page }
-    nextParams = _.omit(nextParams, _.isUndefined)
     this.loadPostData(nextParams)
   }
 
@@ -75,9 +77,9 @@ class Archive extends Component {
         <span className="date" >
           {format(post.createTime, CONF_DATE)}
         </span>
-        <a href="#" title={post.title}>
+        <Link to={{ pathname: `post/${post._id}` }}>
           {post.title}
-        </a>
+        </Link>
       </li>
     ))
   }
