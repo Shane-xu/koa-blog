@@ -42,7 +42,7 @@ class Header extends Component {
         <div className="site-name">
           <hi className="hidden">Superman Blog</hi>
           <a href="./" id="logo">Superman Blog</a>
-          <p className="description">副标题</p>
+          {/* <p className="description"></p> */}
           <div id="nav-menu">
             {this.renderNav()}
           </div>
