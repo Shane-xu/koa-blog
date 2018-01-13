@@ -23,6 +23,22 @@ export function fetchPostById(id) {
   }
 }
 
+/**
+ * 文章更新访问量
+ */
+export function addVisitCount(id) {
+  return {
+    actionType: types.ADD_POST_VISIT_COUNT,
+    options: {
+      url: apis.API_ADD_VISIT_COUNT,
+      method: 'patch',
+      params: {
+        id
+      }
+    }
+  }
+}
+
 export function fetchCategories(params) {
   return {
     actionType: types.FETCH_CATEGORIES,

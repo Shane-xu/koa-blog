@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import marked from 'marked'
 import { format } from 'date-fns'
 import hljs from 'highlight.js'
+import { Link } from 'react-router'
 import { Loading } from '../common'
 import { CONF_DATE } from '../../constants/Conf'
 
@@ -12,7 +13,8 @@ marked.setOptions({
 
 const propTypes = {
   params: PropTypes.object,
-  fetchPostById: PropTypes.func
+  onFetchPostById: PropTypes.func,
+  onAddVisitCount: PropTypes.func
 }
 
 class Post extends Component {
@@ -21,6 +23,7 @@ class Post extends Component {
     this.state = {
       post: {},
       loading: true,
+      visitCount: null,
     }
   }
 
@@ -29,15 +32,26 @@ class Post extends Component {
   }
 
   loadPost = () => {
-    const { params, fetchPostById } = this.props
+    const { params, onFetchPostById } = this.props
     if (!params.id) {
       throw new Error('post id should be exist')
     }
-    fetchPostById && fetchPostById(params.id)
+    onFetchPostById && onFetchPostById(params.id)
       .then((res) => {
         this.setState({
           post: res.post,
           loading: false,
+        })
+        this.handleVisitCount(params.id)
+      })
+  }
+
+  handleVisitCount = (id) => {
+    const { onAddVisitCount } = this.props
+    onAddVisitCount && onAddVisitCount(id)
+      .then((res) => {
+        this.setState({
+          visitCount: res.visitCount
         })
       })
   }
@@ -53,6 +67,58 @@ class Post extends Component {
     )
   }
 
+  renderMeta() {
+    const { post, visitCount } = this.state
+    return (
+      <div className="post-meta">
+        {format(post.createTime, CONF_DATE)}
+        <span>&nbsp;|&nbsp;</span>
+        <span className="category" >
+          <Link
+            to={{
+              pathname: '/archives',
+              query: {
+                category: post.category._id
+              }
+            }}
+          >
+            {post.category.name}
+          </Link>
+        </span>
+        <span id="leancloud_counter">
+          &nbsp;|&nbsp;
+          <span id="leancloud_value_page_pv">
+            {visitCount}
+          </span>
+          <span> Views</span>
+        </span>
+      </div>
+    )
+  }
+
+  renderTags() {
+    const { tags } = this.state.post
+    const tagsItems = tags.map(tag => (
+      <Link
+        to={{
+          pathname: '/archives',
+          query: {
+            tag: tag._id
+          }
+        }}
+        key={tag._id}
+      >
+        {tag.name}
+      </Link>
+    ))
+
+    return (
+      <div className="tags">
+        {tagsItems}
+      </div>
+    )
+  }
+
   render() {
     const { post, loading } = this.state
 
@@ -65,12 +131,12 @@ class Post extends Component {
           <div className="post-title">
             {post.title}
           </div>
-          <div className="post-meta">
-            {format(post.createTime, CONF_DATE)}
-          </div>
+          {this.renderMeta()}
           <div className="post-content">
             {this.renderContent()}
           </div>
+          {this.renderTags()}
+          <div className="post-nav" ></div>
         </div>
       </div>
     )

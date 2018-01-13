@@ -10,6 +10,7 @@ export default createConstants(
   // post
   'FETCH_POSTS',
   'FETCH_POST_BY_ID',
+  'ADD_POST_VISIT_COUNT',
   // about
   'FETCH_ABOUT',
 )

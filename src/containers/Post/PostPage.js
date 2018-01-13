@@ -13,7 +13,8 @@ import * as actionCreators from '../../actions'
 function mapDispatch2Props(dispatch) {
   const actions = bindActionCreators(actionCreators, dispatch)
   return {
-    fetchPostById: actions.fetchPostById
+    onFetchPostById: actions.fetchPostById,
+    onAddVisitCount: actions.addVisitCount
   }
 }
 
