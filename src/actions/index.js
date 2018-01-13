@@ -11,6 +11,23 @@ export function fetchPosts(params) {
   }
 }
 
+
+/**
+ * 获取最新n条文章
+ */
+
+export function fetchLastPosts(limit = 10) {
+  return {
+    actionType: types.FETCH_LAST_POSTS,
+    options: {
+      url: apis.API_LAST_POSTS,
+      params: {
+        limit
+      }
+    }
+  }
+}
+
 export function fetchPostById(id) {
   return {
     actionType: types.FETCH_POST_BY_ID,

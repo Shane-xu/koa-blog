@@ -6,11 +6,11 @@ export default () => (
       Superman‘s Blog.
     </a>
     <a rel=" noopener noreferrer" target="_blank" href="https://github.com/tufu9441/maupassant-hexo">
-      Theme
+      &nbsp;Theme&nbsp;
     </a>
     by
     <a rel="nofollow" target="_blank" href="https://github.com/pagecho">
-      Cho.
+    &nbsp;Cho.
     </a>
     <a style={{ display: 'block' }}>
       <span>本站共 </span>

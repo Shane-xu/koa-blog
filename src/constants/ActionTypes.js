@@ -9,6 +9,7 @@ export default createConstants(
   'FETCH_COMMENTS',
   // post
   'FETCH_POSTS',
+  'FETCH_LAST_POSTS',
   'FETCH_POST_BY_ID',
   'ADD_POST_VISIT_COUNT',
   // about

@@ -11,17 +11,22 @@ import {
 const propTypes = {
   tags: PropTypes.array,
   categories: PropTypes.array,
+  posts: PropTypes.array,
 }
 class Siderbar extends Component {
 
   render() {
-    const { categories, tags } = this.props
+    const {
+      categories,
+      tags,
+      posts,
+     } = this.props
     return (
       <div id="sidebar">
         <Search />
         <Category categories={categories} />
         <Tag tags={tags} />
-        <Recent />
+        <Recent posts={posts} />
       </div>
     )
   }

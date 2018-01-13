@@ -13,14 +13,16 @@ function mapState2Props(state) {
   return {
     tags: commonSt.tags,
     categories: commonSt.categories,
+    posts: commonSt.posts,
   };
 }
 
 function mapDispatch2Props(dispatch) {
   const actions = bindActionCreators(actionCreators, dispatch)
   return {
-    fetchTags: actions.fetchTags,
-    fetchCategories: actions.fetchCategories
+    onFetchTags: actions.fetchTags,
+    onFetchCategories: actions.fetchCategories,
+    onFetchLastPosts: actions.fetchLastPosts,
   }
 }
 

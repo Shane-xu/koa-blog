@@ -7,7 +7,8 @@ import {
 
 const initialState = {
   tags: [],
-  categories: []
+  categories: [],
+  posts: []
 }
 
 export default createReducer(initialState, {
@@ -19,6 +20,11 @@ export default createReducer(initialState, {
   [types.FETCH_CATEGORIES]: createRequestHandler((state, action) => {
     return {
       categories: toItems(action)
+    }
+  }),
+  [types.FETCH_LAST_POSTS]: createRequestHandler((state, action) => {
+    return {
+      posts: toItems(action)
     }
   })
 })

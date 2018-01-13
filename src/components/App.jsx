@@ -8,8 +8,10 @@ import { Loading } from './common'
 const propTypes = {
   tags: PropTypes.array,
   categories: PropTypes.array,
-  fetchTags: PropTypes.func,
-  fetchCategories: PropTypes.func
+  posts: PropTypes.array,
+  onFetchTags: PropTypes.func,
+  onFetchCategories: PropTypes.func,
+  onFetchLastPosts: PropTypes.func
 };
 
 const contextTypes = {
@@ -35,13 +37,20 @@ class App extends Component {
   }
 
   initData = () => {
-    const { fetchTags, fetchCategories } = this.props
+    const {
+      onFetchTags,
+      onFetchCategories,
+      onFetchLastPosts,
+     } = this.props
     const init = []
     init.push(new Promise((resolve) => {
-      fetchTags().then(resolve);
+      onFetchTags().then(resolve);
     }))
     init.push(new Promise((resolve) => {
-      fetchCategories().then(resolve);
+      onFetchCategories().then(resolve);
+    }))
+    init.push(new Promise((resolve) => {
+      onFetchLastPosts().then(resolve);
     }))
     Promise.all(init)
       .then(() => {
@@ -55,6 +64,7 @@ class App extends Component {
       children,
       tags,
       categories,
+      posts,
     } = this.props;
     if (!ready) {
       return <Loading />
@@ -70,6 +80,7 @@ class App extends Component {
             <Sidebar
               tags={tags}
               categories={categories}
+              posts={posts}
             />
           </div>
           <div className="pure-u-1 pure-u-md-3-4" >
