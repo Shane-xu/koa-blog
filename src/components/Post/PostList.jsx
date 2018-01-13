@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router'
 import { format } from 'date-fns'
+import _ from 'lodash'
 import {
   Pagination,
   Loading,
@@ -19,12 +20,17 @@ const propTypes = {
 class PostList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      params: {
+    const params = {
+      ...props.location.query,
+      ...{
         page: PAGE,
         pageSize: PAGE_SIZE,
         total: 0,
-      },
+      }
+    }
+
+    this.state = {
+      params,
       posts: [],
       loading: true,
     }
@@ -34,9 +40,27 @@ class PostList extends Component {
     this.loadPostData()
   }
 
-  loadPostData = (params) => {
+  componentWillReceiveProps(nextProps) {
+    const { query } = nextProps.location
+    if (_.isEqual(query, this.props.location.query)) {
+      let nextParams = {
+        ...this.state.params,
+        ...{
+          word: query.word,
+        }
+      }
+
+      this.setState({
+        params: nextParams,
+      })
+      this.loadPostData(nextParams)
+    }
+  }
+
+  loadPostData = (params = this.state.params) => {
     const { fetchPosts } = this.props
-    fetchPosts && fetchPosts(params || this.state.params)
+    const nextParams = _.omit(params, 'total')
+    fetchPosts && fetchPosts(nextParams)
       .then((response) => {
         this.setState({
           params: response.page,

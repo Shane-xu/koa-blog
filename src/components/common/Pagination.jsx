@@ -73,7 +73,7 @@ class Pagination extends Component {
       const isActive = index === page
       let cls = classNames({
         'page-number': true,
-        page: isActive,
+        current: isActive,
       })
       return (
         isActive ?
