@@ -42,3 +42,13 @@ export function fetchTags(params) {
     }
   }
 }
+
+export function fetchAbout(params) {
+  return {
+    actionType: types.FETCH_ABOUT,
+    options: {
+      url: apis.API_ABOUT,
+      params
+    }
+  }
+}
