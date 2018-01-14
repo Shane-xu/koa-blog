@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import marked from 'marked'
 import { format } from 'date-fns'
@@ -6,6 +7,7 @@ import hljs from 'highlight.js'
 import { Link } from 'react-router'
 import { Loading } from '../common'
 import { CONF_DATE } from '../../constants/Conf'
+import { scrollTo } from '../../utils/dom'
 
 marked.setOptions({
   highlight: code => hljs.highlightAuto(code).value,
@@ -22,6 +24,8 @@ class Post extends Component {
     super(props)
     this.state = {
       post: {},
+      prev: null,
+      next: null,
       loading: true,
       visitCount: null,
     }
@@ -31,20 +35,39 @@ class Post extends Component {
     this.loadPost()
   }
 
-  loadPost = () => {
+  componentWillReceiveProps(nextProps) {
+    const { params } = nextProps
+
+    if (params.id !== this.props.params.id) {
+      this.setState({
+        loading: true,
+      })
+      this.loadPost(params.id)
+    }
+  }
+
+  componentDidUpdate() {
+    scrollTo()
+  }
+
+  loadPost = (id) => {
     const { params, onFetchPostById } = this.props
     if (!params.id) {
       throw new Error('post id should be exist')
     }
-    onFetchPostById && onFetchPostById(params.id)
+    onFetchPostById && onFetchPostById(id || params.id)
       .then((res) => {
         this.setState({
           post: res.post,
           loading: false,
+          prev: res.prev,
+          next: res.next,
         })
         this.handleVisitCount(params.id)
       })
   }
+
+
 
   handleVisitCount = (id) => {
     const { onAddVisitCount } = this.props
@@ -119,6 +142,34 @@ class Post extends Component {
     )
   }
 
+  renderPostNav() {
+    const { prev, next } = this.state
+    return (
+      <div className="post-nav" >
+        {
+          prev && (
+            <Link
+              className="prev"
+              to={{ pathname: `post/${prev._id}` }}
+            >
+              {prev.title}
+            </Link>
+          )
+        }
+        {
+          next && (
+            <Link
+              className="next"
+              to={{ pathname: `post/${next._id}` }}
+            >
+              {next.title}
+            </Link>
+          )
+        }
+      </div>
+    )
+  }
+
   render() {
     const { post, loading } = this.state
 
@@ -136,7 +187,7 @@ class Post extends Component {
             {this.renderContent()}
           </div>
           {this.renderTags()}
-          <div className="post-nav" ></div>
+          {this.renderPostNav()}
         </div>
       </div>
     )
