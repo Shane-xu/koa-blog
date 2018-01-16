@@ -1,7 +1,7 @@
 export default {
   childRoutes: [{
     path: '/',
-    component: require('../containers'),
+    component: require('../containers/index').default,
     indexRoute: {
       onEnter: (nextState, replace) => replace('/posts')
     },
