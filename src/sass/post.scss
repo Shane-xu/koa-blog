@@ -1,0 +1,32 @@
+.comment {
+  h3 {
+    font-size: 16px;
+  }
+  p {
+    margin-bottom: 5px;
+  }
+  form {
+    .input-group {
+      font-size: 14px;
+      margin-bottom: 10px;
+      textarea,
+      input {
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        padding: 10px;
+      }
+      textarea {
+        width: 100%;
+      }
+      input {
+        width: 50%;
+      }
+    }
+    .submit {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      padding: 5px 10px;
+    }
+  }
+}

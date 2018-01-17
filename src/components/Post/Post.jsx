@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import marked from 'marked'
 import { format } from 'date-fns'
@@ -16,7 +15,7 @@ marked.setOptions({
 const propTypes = {
   params: PropTypes.object,
   onFetchPostById: PropTypes.func,
-  onAddVisitCount: PropTypes.func
+  onAddVisitCount: PropTypes.func,
 }
 
 class Post extends Component {
@@ -50,13 +49,13 @@ class Post extends Component {
     scrollTo()
   }
 
-  loadPost = (id) => {
+  loadPost = id => {
     const { params, onFetchPostById } = this.props
     if (!params.id) {
       throw new Error('post id should be exist')
     }
-    onFetchPostById && onFetchPostById(id || params.id)
-      .then((res) => {
+    onFetchPostById &&
+      onFetchPostById(id || params.id).then(res => {
         this.setState({
           post: res.post,
           loading: false,
@@ -67,14 +66,12 @@ class Post extends Component {
       })
   }
 
-
-
-  handleVisitCount = (id) => {
+  handleVisitCount = id => {
     const { onAddVisitCount } = this.props
-    onAddVisitCount && onAddVisitCount(id)
-      .then((res) => {
+    onAddVisitCount &&
+      onAddVisitCount(id).then(res => {
         this.setState({
-          visitCount: res.visitCount
+          visitCount: res.visitCount,
         })
       })
   }
@@ -82,11 +79,14 @@ class Post extends Component {
   renderContent() {
     const { post } = this.state
     if (!post.content) {
-      return null;
+      return null
     }
     const content = marked(post.content)
     return (
-      <div className="markdown-body" dangerouslySetInnerHTML={{ __html: content }} />
+      <div
+        className="markdown-body"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
     )
   }
 
@@ -96,13 +96,13 @@ class Post extends Component {
       <div className="post-meta">
         {format(post.createTime, CONF_DATE)}
         <span>&nbsp;|&nbsp;</span>
-        <span className="category" >
+        <span className="category">
           <Link
             to={{
               pathname: '/archives',
               query: {
-                category: post.category._id
-              }
+                category: post.category._id,
+              },
             }}
           >
             {post.category.name}
@@ -110,9 +110,7 @@ class Post extends Component {
         </span>
         <span id="leancloud_counter">
           &nbsp;|&nbsp;
-          <span id="leancloud_value_page_pv">
-            {visitCount}
-          </span>
+          <span id="leancloud_value_page_pv">{visitCount}</span>
           <span> Views</span>
         </span>
       </div>
@@ -126,8 +124,8 @@ class Post extends Component {
         to={{
           pathname: '/archives',
           query: {
-            tag: tag._id
-          }
+            tag: tag._id,
+          },
         }}
         key={tag._id}
       >
@@ -135,37 +133,23 @@ class Post extends Component {
       </Link>
     ))
 
-    return (
-      <div className="tags">
-        {tagsItems}
-      </div>
-    )
+    return <div className="tags">{tagsItems}</div>
   }
 
   renderPostNav() {
     const { prev, next } = this.state
     return (
-      <div className="post-nav" >
-        {
-          prev && (
-            <Link
-              className="prev"
-              to={{ pathname: `post/${prev._id}` }}
-            >
-              {prev.title}
-            </Link>
-          )
-        }
-        {
-          next && (
-            <Link
-              className="next"
-              to={{ pathname: `post/${next._id}` }}
-            >
-              {next.title}
-            </Link>
-          )
-        }
+      <div className="post-nav">
+        {prev && (
+          <Link className="prev" to={{ pathname: `post/${prev._id}` }}>
+            {prev.title}
+          </Link>
+        )}
+        {next && (
+          <Link className="next" to={{ pathname: `post/${next._id}` }}>
+            {next.title}
+          </Link>
+        )}
       </div>
     )
   }
@@ -177,15 +161,11 @@ class Post extends Component {
       return <Loading />
     }
     return (
-      <div className="content_container" >
-        <div className="post" >
-          <div className="post-title">
-            {post.title}
-          </div>
+      <div className="content_container">
+        <div className="post">
+          <div className="post-title">{post.title}</div>
           {this.renderMeta()}
-          <div className="post-content">
-            {this.renderContent()}
-          </div>
+          <div className="post-content">{this.renderContent()}</div>
           {this.renderTags()}
           {this.renderPostNav()}
         </div>
