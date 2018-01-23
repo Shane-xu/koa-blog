@@ -1,7 +1,17 @@
 {
   "presets": [
-    "es2015",
+    "env",
     "react",
     "stage-0"
+  ],
+  "env": {
+    "production": {
+      "presets": [
+        "react-optimize"
+      ]
+    }
+  },
+  "plugins": [
+    "lodash"
   ]
 }
