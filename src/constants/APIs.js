@@ -1,4 +1,7 @@
-export const BASE_URL = 'http://localhost:3200/api'
+export const BASE_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'http://api.xxxx.com:3200/api'   // 生产环境的api地址
+    : 'http://localhost:3200/api'
 
 export const API_CATEGORIES = '/categories'
 export const API_TAGS = '/tags'
