@@ -4,18 +4,13 @@ import _ from 'lodash'
 import { format } from 'date-fns'
 import { Link } from 'react-router'
 import { CONF_DATE } from '../../constants/Conf'
-import {
-  Pagination,
-  Loading,
-} from '../common'
-import {
-  PAGE,
-  PAGE_SIZE
-} from '../../constants/Pagination'
+import { Pagination, Loading } from '../common'
+import { PAGE, PAGE_SIZE } from '../../constants/Pagination'
+import { BulletListLoader } from '../common/ContentLoader'
 
 const propTypes = {
   location: PropTypes.object,
-  fetchPosts: PropTypes.func
+  fetchPosts: PropTypes.func,
 }
 class Archive extends Component {
   constructor(props) {
@@ -27,7 +22,7 @@ class Archive extends Component {
         pageSize: PAGE_SIZE,
         total: 0,
         tag: location.query.tag,
-        category: location.query.category
+        category: location.query.category,
       },
       posts: [],
       loading: true,
@@ -47,8 +42,8 @@ class Archive extends Component {
         ...this.state.params,
         ...{
           tag: query.tag,
-          category: query.category
-        }
+          category: query.category,
+        },
       }
 
       this.setState({
@@ -62,18 +57,19 @@ class Archive extends Component {
     const { fetchPosts } = this.props
 
     const nextParams = _.omit(params, 'total')
-    fetchPosts && fetchPosts(nextParams)
-      .then((response) => {
-        this.setState({
-          params: response.page,
-          posts: response.items,
-          loading: false,
+    fetchPosts &&
+      fetchPosts(nextParams)
+        .then(response => {
+          this.setState({
+            params: response.page,
+            posts: response.items,
+            loading: false,
+          })
         })
-      })
-      .catch(err => console.error(err))
+        .catch(err => console.error(err))
   }
 
-  handlePaginationChange = (page) => {
+  handlePaginationChange = page => {
     let nextParams = { ...this.state.params, page }
     this.loadPostData(nextParams)
   }
@@ -82,12 +78,8 @@ class Archive extends Component {
     const { posts } = this.state
     return posts.map(post => (
       <li key={post._id}>
-        <span className="date" >
-          {format(post.createTime, CONF_DATE)}
-        </span>
-        <Link to={{ pathname: `post/${post._id}` }}>
-          {post.title}
-        </Link>
+        <span className="date">{format(post.createTime, CONF_DATE)}</span>
+        <Link to={{ pathname: `post/${post._id}` }}>{post.title}</Link>
       </li>
     ))
   }
@@ -109,12 +101,10 @@ class Archive extends Component {
       return <Loading />
     }
     return (
-      <div className="content_container" >
-        <div className="post" >
-          <div className="post-archive" >
-            <ul className="listing" >
-              {this.renderList()}
-            </ul>
+      <div className="content_container">
+        <div className="post">
+          <div className="post-archive">
+            <ul className="listing">{this.renderList()}</ul>
           </div>
         </div>
         {this.renderPagination()}
