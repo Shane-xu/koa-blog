@@ -121,8 +121,8 @@ class Comment extends Component {
           <div className="input-group">
             <input
               type="text"
-              id="site"
-              name="site"
+              id="website"
+              name="website"
               placeholder="站点"
               onChange={this.handleInputChange}
             />
