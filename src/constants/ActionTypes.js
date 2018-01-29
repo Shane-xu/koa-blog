@@ -6,7 +6,8 @@ export default createConstants(
   // tags
   'FETCH_TAGS',
   // comments
-  'FETCH_COMMENTS',
+  'FETCH_COMMENTS_BY_POST_ID',
+  'ADD_COMMENT',
   // post
   'FETCH_POSTS',
   'FETCH_LAST_POSTS',

@@ -5,7 +5,8 @@ export const BASE_URL =
 
 export const API_CATEGORIES = '/categories'
 export const API_TAGS = '/tags'
-export const API_COMMENTS = '/comments'
+export const API_ADD_COMMENT = '/comments'
+export const API_GET_COMMENTS_POST_ID = '/comments/post/:id'
 export const API_POSTS = '/posts'
 export const API_LAST_POSTS = '/posts/list/last'
 export const API_POST_BY_ID = '/posts/:id'

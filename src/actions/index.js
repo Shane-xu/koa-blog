@@ -6,12 +6,21 @@ export function fetchPosts(params) {
     actionType: types.FETCH_POSTS,
     options: {
       url: apis.API_POSTS,
-      params
-    }
+      params,
+    },
   }
 }
 
-
+export function addComment(body) {
+  return {
+    actionType: types.ADD_COMMENT,
+    options: {
+      url: apis.API_ADD_COMMENT,
+      method: 'post',
+      body,
+    },
+  }
+}
 /**
  * 获取最新n条文章
  */
@@ -22,9 +31,9 @@ export function fetchLastPosts(limit = 10) {
     options: {
       url: apis.API_LAST_POSTS,
       params: {
-        limit
-      }
-    }
+        limit,
+      },
+    },
   }
 }
 
@@ -34,9 +43,25 @@ export function fetchPostById(id) {
     options: {
       url: apis.API_POST_BY_ID,
       params: {
-        id
-      }
-    }
+        id,
+      },
+    },
+  }
+}
+
+/**
+ * 获取文章评论列表
+ * @param {*} id post id
+ */
+export function fetchCommentsByPostId(id) {
+  return {
+    actionType: types.FETCH_COMMENTS_BY_POST_ID,
+    options: {
+      url: apis.API_GET_COMMENTS_POST_ID,
+      params: {
+        id,
+      },
+    },
   }
 }
 
@@ -50,9 +75,9 @@ export function addVisitCount(id) {
       url: apis.API_ADD_VISIT_COUNT,
       method: 'patch',
       params: {
-        id
-      }
-    }
+        id,
+      },
+    },
   }
 }
 
@@ -61,8 +86,8 @@ export function fetchCategories(params) {
     actionType: types.FETCH_CATEGORIES,
     options: {
       url: apis.API_CATEGORIES,
-      params
-    }
+      params,
+    },
   }
 }
 
@@ -71,8 +96,8 @@ export function fetchTags(params) {
     actionType: types.FETCH_TAGS,
     options: {
       url: apis.API_TAGS,
-      params
-    }
+      params,
+    },
   }
 }
 
@@ -81,7 +106,7 @@ export function fetchAbout(params) {
     actionType: types.FETCH_ABOUT,
     options: {
       url: apis.API_ABOUT,
-      params
-    }
+      params,
+    },
   }
 }

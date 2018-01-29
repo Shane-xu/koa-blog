@@ -2,11 +2,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import marked from 'marked'
 import { format } from 'date-fns'
-import hljs from 'highlight.js'
+import hljs, { COMMENT } from 'highlight.js'
 import { Link } from 'react-router'
 import { Loading } from '../common'
 import { CONF_DATE } from '../../constants/Conf'
 import { scrollTo } from '../../utils/dom'
+import Comment from './Comment'
 
 marked.setOptions({
   highlight: code => hljs.highlightAuto(code).value,
@@ -16,6 +17,8 @@ const propTypes = {
   params: PropTypes.object,
   onFetchPostById: PropTypes.func,
   onAddVisitCount: PropTypes.func,
+  onAddComment: PropTypes.func,
+  onFetchCommentsByPostId: PropTypes.func,
 }
 
 class Post extends Component {
@@ -27,6 +30,7 @@ class Post extends Component {
       next: null,
       loading: true,
       visitCount: null,
+      commentList: [],
     }
   }
 
@@ -50,20 +54,27 @@ class Post extends Component {
   }
 
   loadPost = id => {
-    const { params, onFetchPostById } = this.props
+    const { params, onFetchPostById, onFetchCommentsByPostId } = this.props
     if (!params.id) {
       throw new Error('post id should be exist')
     }
+    id = id || params.id
     onFetchPostById &&
-      onFetchPostById(id || params.id).then(res => {
+      onFetchPostById(id).then(res => {
         this.setState({
           post: res.post,
           loading: false,
           prev: res.prev,
           next: res.next,
         })
-        this.handleVisitCount(params.id)
+        this.handleVisitCount(id)
       })
+
+    onFetchCommentsByPostId(id).then(res => {
+      this.setState({
+        commentList: res.items,
+      })
+    })
   }
 
   handleVisitCount = id => {
@@ -141,7 +152,7 @@ class Post extends Component {
     return (
       <div className="post-nav">
         {prev && (
-          <Link className="prev" to={{ pathname: `post/${prev._id}` }}>
+          <Link className="pre" to={{ pathname: `post/${prev._id}` }}>
             {prev.title}
           </Link>
         )}
@@ -151,6 +162,18 @@ class Post extends Component {
           </Link>
         )}
       </div>
+    )
+  }
+
+  renderComment() {
+    const { commentList, post } = this.state
+    const { onAddComment } = this.props
+    return (
+      <Comment
+        commentList={commentList}
+        addComment={onAddComment}
+        post={post._id}
+      />
     )
   }
 
@@ -168,6 +191,7 @@ class Post extends Component {
           <div className="post-content">{this.renderContent()}</div>
           {this.renderTags()}
           {this.renderPostNav()}
+          {this.renderComment()}
         </div>
       </div>
     )
