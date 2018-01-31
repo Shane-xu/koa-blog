@@ -37,6 +37,11 @@ class Comment extends Component {
       formData: newFormData,
     })
   }
+
+  handleQuote = comment => {
+
+  }
+
   handleSubmit = e => {
     const { formData } = this.state
     const { addComment, post } = this.props
@@ -64,7 +69,14 @@ class Comment extends Component {
             {format(comment.createTime, CONF_DATETIME)}
           </span>
           <div className="content">{comment.content}</div>
-          <span className="quote">引用</span>
+          <span
+            role="button"
+            tabIndex="-1"
+            className="quote"
+            onClick={() => this.handleQuote(comment)}
+          >
+            引用
+          </span>
         </li>
       )
     })
