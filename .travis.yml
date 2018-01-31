@@ -17,7 +17,6 @@ after_script:
 - scp -P $PORT -r /build $SERVER_NAME:/www/koa-blog
 deploy:
   on:
-    tags: true
     branches:
       only:
         - master
