@@ -15,6 +15,8 @@ script:
 - npm run build
 after_script:
 - scp -P $PORT -r /build $SERVER_NAME:/www/koa-blog
+addons:
+  ssh_known_hosts: blog.iamsuperman.cn
 deploy:
   on:
     branches:
