@@ -1,0 +1,24 @@
+language: node_js
+node_js:
+- '7'
+cache:
+  bundler: true
+  directories:
+  - node_modules
+
+before_install:
+- openssl aes-256-cbc -K $encrypted_91f382c52391_key -iv $encrypted_91f382c52391_iv
+  -in travis.enc -out ~\/.ssh/travis -d
+install:
+- npm install
+script:
+- npm run build
+after_script:
+- scp -P $PORT -r /build $SERVER_NAME:/www/koa-blog
+deploy:
+  on:
+    tags: true
+    branches:
+      only:
+        - master
+
