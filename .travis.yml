@@ -1,0 +1,22 @@
+language: node_js
+node_js:
+- '7'
+cache:
+  bundler: true
+  directories:
+  - node_modules
+before_install:
+- openssl aes-256-cbc -K $encrypted_91f382c52391_key -iv $encrypted_91f382c52391_iv
+  -in id_rsa.enc -out ~/.ssh/id_rsa -d
+- chmod 600 ~/.ssh/id_rsa
+install:
+- npm install
+script:
+- npm run build
+after_script:
+- scp -P $PORT -r build $SERVER_NAME:www/koa-blog
+addons:
+  ssh_known_hosts: $SSH_HOST
+branches:
+  only:
+  - master
