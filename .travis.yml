@@ -16,7 +16,10 @@ script:
 after_script:
 - scp -P $PORT -r build $SERVER_NAME:www/koa-blog
 addons:
-  ssh_known_hosts: $SSH_HOST
+  ssh_known_hosts:
+   - secure: gksozq5E8mwPcLayBP+WlLYyxxhSjwvz2zKydNjW1bcRvMwMnQTozGGUYsT0o4UPbWOi6my6wktmFYutRc30u8YudwSht1Zmwlqd+GOMKZHgHCvtU1360Nw6nbZTZx4WTcqKM5FvWDXBsqTf/ArP9DMipdxg8/4CYkcokpJFxoha6a5J7e0tpQKl200hkvWWo+ErYFlAex70pKoVg7O+ne87eHR6MGaGS9+BdS7vA14btAQm27g7+UhyO49SWF41QJThZOKh+n909ARwfbxqja6j1kk+zJu6NrP7KC0dvegcH838M6S7KcnuEo5MKBCpBV2rfvKB8tqj41LTSUC5cWsC9XC17OFLsrQ6+H32MpcK81CUikMwIZPFT8DxF0ldj7HxcOe1rqtm6SRk0vVdRdJHy0Nb/0f7mpuz5uHaYTYfKCOxBqTuIsGIwmjZURw4wfb/mQhYo67nBhaSTgZ5sASMmoC20kUMvswxRTH5tFrYrYi9pQUgI0NFgF3x6WsxheGTpspQogBuLIvP/lcrvAbzGkLZivxIR49sU2ztxMyox94ccni7+FLk3xPuU+Mf8Mn6tbU0ey/B01nR5e9qGdpWwxdIEWSeygTy3+DKQC72ekZPtckZc39eWjtlEmAeiHs2NGQ3iEvXq3noEfDlw8PgP3Kl/0fH3GgzU0NPOsA=
 branches:
   only:
   - master
+dd:
+
