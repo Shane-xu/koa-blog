@@ -35,6 +35,6 @@ module.exports = {
     rules: [...commonRules],
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.ts', '.tsx'],
   },
 }

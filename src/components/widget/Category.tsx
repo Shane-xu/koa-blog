@@ -1,7 +1,11 @@
-import React from 'react'
+import * as React from 'react'
 import { Link } from 'react-router'
 
-const Category = ({ categories }) => (
+interface Props {
+  categories: Array<any>
+}
+
+const Category: React.SFC<Props> = ({ categories }) => (
   <div className="widget" >
     <div className="widget-title" >
       <i className="fa fa-folder-o" >分类</i>

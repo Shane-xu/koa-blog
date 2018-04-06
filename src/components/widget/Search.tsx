@@ -1,20 +1,24 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const contextTypes = {
-  router: PropTypes.object,
+interface ContextTypes {
+  router: any
 }
 class Search extends React.Component {
 
-  handleSearch = (e) => {
+  static contextTypes = {
+    router: PropTypes.object,
+  }
+
+  handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const { router } = this.context
     // enter
     if (e.keyCode === 13 && e.target.value !== '') {
       router.push({
         pathname: '/posts',
         query: {
-          word: e.target.value.trim()
-        }
+          word: e.target.value.trim(),
+        },
       })
     }
   }
@@ -22,7 +26,7 @@ class Search extends React.Component {
   render() {
     return (
       <div className="widget">
-        <div className="search-form" >
+        <div className="search-form">
           <input
             type="text"
             placeholder="Search"
@@ -33,6 +37,4 @@ class Search extends React.Component {
     )
   }
 }
-
-Search.contextTypes = contextTypes
 export default Search

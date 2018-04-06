@@ -1,6 +1,10 @@
-import React from 'react'
+import * as React from 'react'
 import { Link } from 'react-router'
-const Recent = ({ posts }) => (
+
+interface Props {
+  posts: Array<any>
+}
+const Recent: React.SFC<Props> = ({ posts }) => (
   <div className="widget" >
     <div className="widget-title" >
       <i className="fa fa-file-o" >最近文章</i>

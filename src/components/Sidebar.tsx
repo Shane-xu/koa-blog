@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import * as React from 'react'
 
 import {
   Search,
@@ -8,13 +7,13 @@ import {
   Recent,
 } from './widget'
 
-const propTypes = {
-  tags: PropTypes.array,
-  categories: PropTypes.array,
-  posts: PropTypes.array,
+interface Props {
+  tags: Array<any>,
+  categories: Array<any>,
+  posts: Array<any>,
 }
-class Siderbar extends Component {
 
+class Siderbar extends React.Component<Props> {
   render() {
     const {
       categories,
@@ -32,6 +31,5 @@ class Siderbar extends Component {
   }
 }
 
-Siderbar.propTypes = propTypes
 export default Siderbar
 

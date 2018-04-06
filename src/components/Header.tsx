@@ -1,8 +1,15 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import { Link } from 'react-router'
-
-class Header extends Component {
-  constructor(props) {
+interface Props {}
+interface State {
+  navs: Array<{
+    name: string
+    link: string
+    icon: string
+  }>
+}
+class Header extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {
       navs: [
@@ -45,7 +52,7 @@ class Header extends Component {
     return (
       <div id="header">
         <div className="site-name">
-          <hi className="hidden">Superman Blog</hi>
+          <h1 className="hidden">Superman Blog</h1>
           <a href="./" id="logo">
             Superman Blog
           </a>
