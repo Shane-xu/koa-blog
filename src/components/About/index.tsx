@@ -1,14 +1,21 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import * as React from 'react'
 import marked from 'marked'
 import hljs from 'highlight.js'
 import { Loading } from '../common'
 
-const propTypes = {
-  onFetchAbout: PropTypes.func
+interface Props {
+  onFetchAbout: () => any
 }
-class About extends Component {
-  constructor(props) {
+interface AboutConfig {
+  _id?: string
+  content?: string
+}
+interface State {
+  about: AboutConfig
+  loading: boolean
+}
+class About extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {
       about: {},
@@ -18,8 +25,8 @@ class About extends Component {
 
   componentWillMount() {
     const { onFetchAbout } = this.props
-    onFetchAbout && onFetchAbout()
-      .then((res) => {
+    onFetchAbout &&
+      onFetchAbout().then(res => {
         this.setState({
           about: res.about,
           loading: false,
@@ -30,11 +37,14 @@ class About extends Component {
   renderContent() {
     const { about } = this.state
     if (!about.content) {
-      return null;
+      return null
     }
     const content = marked(about.content)
     return (
-      <div className="markdown-body" dangerouslySetInnerHTML={{ __html: content }} />
+      <div
+        className="markdown-body"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
     )
   }
 
@@ -44,16 +54,13 @@ class About extends Component {
       return <Loading />
     }
     return (
-      <div className="content_container" >
-        <div className="post" >
-          <div className="post-content">
-            {this.renderContent()}
-          </div>
+      <div className="content_container">
+        <div className="post">
+          <div className="post-content">{this.renderContent()}</div>
         </div>
       </div>
     )
   }
 }
 
-About.propTypes = propTypes
 export default About

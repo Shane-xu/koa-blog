@@ -1,48 +1,52 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import _ from 'lodash'
+import { Link, RouteComponentProps } from 'react-router'
 import { format } from 'date-fns'
-import { Link } from 'react-router'
-import { CONF_DATE } from '../../constants/Conf'
+import _ from 'lodash'
 import { Pagination, Loading } from '../common'
+import { CONF_DATE } from '../../constants/Conf'
 import { PAGE, PAGE_SIZE } from '../../constants/Pagination'
-import { BulletListLoader } from '../common/ContentLoader'
 
-const propTypes = {
-  location: PropTypes.object,
-  fetchPosts: PropTypes.func,
+interface Props extends RouteComponentProps<void, void> {
+  fetchPosts: (params: any) => any
 }
-class Archive extends Component {
-  constructor(props) {
+
+interface State {
+  params: object
+  posts: Array<any>
+  loading: boolean
+}
+
+class PostList extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
-    const { location } = props
-    this.state = {
-      params: {
+    const params = {
+      ...props.location.query,
+      ...{
         page: PAGE,
         pageSize: PAGE_SIZE,
         total: 0,
-        tag: location.query.tag,
-        category: location.query.category,
       },
+    }
+
+    this.state = {
+      params,
       posts: [],
       loading: true,
     }
   }
+
   componentWillMount() {
-    const { query } = this.props.location
-    if (_.isUndefined(query.tag) || _.isUndefined(query.category)) {
-      this.loadPostData()
-    }
+    this.loadPostData()
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     const { query } = nextProps.location
     if (_.isEqual(query, this.props.location.query)) {
       let nextParams = {
         ...this.state.params,
         ...{
-          tag: query.tag,
-          category: query.category,
+          word: query.word,
         },
       }
 
@@ -55,11 +59,10 @@ class Archive extends Component {
 
   loadPostData = (params = this.state.params) => {
     const { fetchPosts } = this.props
-
     const nextParams = _.omit(params, 'total')
     fetchPosts &&
       fetchPosts(nextParams)
-        .then(response => {
+        .then((response: any) => {
           this.setState({
             params: response.page,
             posts: response.items,
@@ -69,20 +72,29 @@ class Archive extends Component {
         .catch(err => console.error(err))
   }
 
-  handlePaginationChange = page => {
-    let nextParams = { ...this.state.params, page }
+  handlePaginationChange = (page: number) => {
+    const nextParams = { ...this.state.params, page }
     this.loadPostData(nextParams)
   }
 
-  renderList() {
+  renderPost() {
     const { posts } = this.state
     return posts.map(post => (
-      <li key={post._id}>
-        <span className="date">{format(post.createTime, CONF_DATE)}</span>
-        <Link to={{ pathname: `post/${post._id}` }}>{post.title}</Link>
-      </li>
+      <div className="post" key={post._id}>
+        <h1 className="post-title">
+          <Link to={{ pathname: `post/${post._id}` }}>{post.title}</Link>
+        </h1>
+        <div className="post-meta">{format(post.createTime, CONF_DATE)}</div>
+        <div className="post-content">
+          <p>{post.desc}</p>
+        </div>
+        <p className="readmore">
+          <Link to={{ pathname: `post/${post._id}` }}>阅读全文</Link>
+        </p>
+      </div>
     ))
   }
+
   renderPagination() {
     const { page, total } = this.state.params
     return (
@@ -96,21 +108,16 @@ class Archive extends Component {
 
   render() {
     const { loading } = this.state
-
     if (loading) {
       return <Loading />
     }
     return (
       <div className="content_container">
-        <div className="post">
-          <div className="post-archive">
-            <ul className="listing">{this.renderList()}</ul>
-          </div>
-        </div>
+        {this.renderPost()}
         {this.renderPagination()}
       </div>
     )
   }
 }
-Archive.propTypes = propTypes
-export default Archive
+
+export default PostList

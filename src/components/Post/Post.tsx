@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import * as React from 'react'
 import marked from 'marked'
 import { format } from 'date-fns'
 import hljs, { COMMENT } from 'highlight.js'
@@ -13,16 +12,25 @@ marked.setOptions({
   highlight: code => hljs.highlightAuto(code).value,
 })
 
-const propTypes = {
-  params: PropTypes.object,
-  onFetchPostById: PropTypes.func,
-  onAddVisitCount: PropTypes.func,
-  onAddComment: PropTypes.func,
-  onFetchCommentsByPostId: PropTypes.func,
+interface Props {
+  params: object
+  onFetchPostById: (id: string) => any
+  onAddVisitCount: (id: string) => any
+  onAddComment: (commnet: any) => any
+  onFetchCommentsByPostId: (id: string) => any
 }
 
-class Post extends Component {
-  constructor(props) {
+interface State {
+  post: any
+  prev: any
+  next: any
+  loading: boolean
+  visitCount?: number | null
+  commentList: Array<any>
+}
+
+class Post extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {
       post: {},
@@ -38,9 +46,9 @@ class Post extends Component {
     this.loadPost()
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     const { params } = nextProps
-
+    // TODO: props 路由对象如何处理
     if (params.id !== this.props.params.id) {
       this.setState({
         loading: true,
@@ -53,7 +61,7 @@ class Post extends Component {
     scrollTo()
   }
 
-  loadPost = id => {
+  loadPost = (id?: string) => {
     const { params, onFetchPostById, onFetchCommentsByPostId } = this.props
     if (!params.id) {
       throw new Error('post id should be exist')
@@ -198,5 +206,4 @@ class Post extends Component {
   }
 }
 
-Post.propTypes = propTypes
 export default Post

@@ -9,11 +9,6 @@
   "author": "suuperman",
   "license": "MIT",
   "dependencies": {
-    "@types/classnames": "^2.2.3",
-    "@types/prop-types": "^15.5.2",
-    "@types/react": "^16.1.0",
-    "@types/react-dom": "^16.0.4",
-    "@types/react-router": "^3.0.15",
     "axios": "^0.16.2",
     "classnames": ">=2.0.0",
     "date-fns": "^1.29.0",
@@ -40,6 +35,14 @@
     "url": "git@github.com:superman66/koa-blog-front.git"
   },
   "devDependencies": {
+    "@types/classnames": "^2.2.3",
+    "@types/highlight.js": "^9.12.2",
+    "@types/lodash": "^4.14.106",
+    "@types/marked": "^0.3.0",
+    "@types/prop-types": "^15.5.2",
+    "@types/react": "^16.1.0",
+    "@types/react-dom": "^16.0.4",
+    "@types/react-router": "^3.0.15",
     "awesome-typescript-loader": "^4.0.1",
     "babel-core": "^6.7.6",
     "babel-eslint": "^6.1.2",

@@ -1,17 +1,28 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import * as React from 'react'
+import _ from 'lodash'
 import { format } from 'date-fns'
 import { CONF_DATETIME } from '../../constants/Conf'
-import _ from 'lodash'
 
-const propTypes = {
-  post: PropTypes.string,
-  commentList: PropTypes.array,
-  addComment: PropTypes.func,
+interface Props {
+  post: string
+  commentList: Array<any>
+  addComment: (commnet: any) => any
 }
 
-class Comment extends Component {
-  constructor(props) {
+interface State {
+  commentList: Array<any>,
+  formData: any
+}
+
+interface CommentConfig {
+  _id: string,
+  name: string,
+  content: string,
+  createdTime: Date,
+}
+
+class Comment extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {
       commentList: props.commentList,
@@ -19,7 +30,7 @@ class Comment extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     const { commentList } = this.props
     if (_.isEqual(nextProps.commentList, commentList)) {
       this.setState({
@@ -28,26 +39,24 @@ class Comment extends Component {
     }
   }
 
-  handleInputChange = e => {
+  handleInputChange = (e: React.SyntheticEvent<any>) => {
     const { formData } = this.state
-    const name = e.target.name
-    const value = e.target.value
+    const name = e.currentTarget.name
+    const value = e.currentTarget.value
     const newFormData = { ...formData, ...{ [name]: value } }
     this.setState({
       formData: newFormData,
     })
   }
 
-  handleQuote = comment => {
+  handleQuote = (coomment: CommentConfig) => {}
 
-  }
-
-  handleSubmit = e => {
+  handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     const { formData } = this.state
     const { addComment, post } = this.props
-    e.preventDefault()
+    event.preventDefault()
     const newFormData = { ...formData, ...{ post } }
-    addComment(newFormData).then(res => {
+    addComment(newFormData).then((res: any) => {
       this.setState(prevState => {
         return {
           commentList: prevState.commentList.concat(res.comment),
@@ -71,7 +80,7 @@ class Comment extends Component {
           <div className="content">{comment.content}</div>
           <span
             role="button"
-            tabIndex="-1"
+            tabIndex={-1}
             className="quote"
             onClick={() => this.handleQuote(comment)}
           >
@@ -100,12 +109,12 @@ class Comment extends Component {
         <form onSubmit={this.handleSubmit}>
           <div className="input-group">
             <textarea
-              rows="8"
-              cols="45"
+              rows={8}
+              cols={45}
               name="content"
               id="content"
               placeholder="评论"
-              required="required"
+              required
               onChange={this.handleInputChange}
             />
           </div>
@@ -116,7 +125,7 @@ class Comment extends Component {
               name="name"
               id="name"
               placeholder="姓名"
-              required="required"
+              required
               onChange={this.handleInputChange}
             />
           </div>
@@ -126,7 +135,7 @@ class Comment extends Component {
               id="email"
               name="email"
               placeholder="邮箱"
-              required="required"
+              required
               onChange={this.handleInputChange}
             />
           </div>
@@ -155,5 +164,4 @@ class Comment extends Component {
   }
 }
 
-Comment.propTypes = propTypes
 export default Comment
