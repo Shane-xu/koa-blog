@@ -1,5 +1,6 @@
 import * as React from 'react'
 import classNames from 'classnames'
+import _ from 'lodash'
 import { PAGE, PAGE_SIZE } from '../../constants/Pagination'
 
 interface IOnchange {
@@ -8,7 +9,7 @@ interface IOnchange {
 interface IPaginationProps {
   page?: number // 当前页数
   pageSize?: number // 每页条数
-  total: number // 总数
+  total?: number // 总数
   onChange: IOnchange // 页码发生变化的回调
 }
 
@@ -18,7 +19,7 @@ interface IDefaultProps {
 }
 
 type State = {
-  page?: number
+  page: number
 }
 
 class Pagination extends React.Component<
@@ -33,12 +34,12 @@ class Pagination extends React.Component<
   constructor(props: IPaginationProps) {
     super(props)
     this.state = {
-      page: props.page,
+      page: props.page || PAGE,
     }
   }
 
   componentWillReceiveProps(nextProps: IPaginationProps) {
-    if (nextProps.page !== this.props.page) {
+    if (nextProps.page !== this.props.page && nextProps.page) {
       this.setState({
         page: nextProps.page,
       })
@@ -71,7 +72,11 @@ class Pagination extends React.Component<
   renderNumbers() {
     const { page } = this.state
     const { pageSize, total } = this.props
-    const length = Math.ceil(total / pageSize)
+    let length = 0
+    if (_.isNumber(pageSize) && _.isNumber(total)) {
+      length = Math.ceil(total / pageSize)
+    }
+
     const items = []
     for (let i = 1; i <= length; i += 1) {
       items.push(i)
@@ -110,7 +115,12 @@ class Pagination extends React.Component<
   renderNext() {
     const { page } = this.state
     const { total, pageSize } = this.props
-    const length = Math.ceil(total / pageSize)
+    let length = 0
+
+    if (_.isNumber(pageSize) && _.isNumber(total)) {
+      length = Math.ceil(total / pageSize)
+    }
+
     return page < length ? (
       <span className="extend next" onClick={this.handleNext}>
         下一页

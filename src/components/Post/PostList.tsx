@@ -12,7 +12,12 @@ interface Props extends RouteComponentProps<void, void> {
 }
 
 interface State {
-  params: object
+  params: {
+    id: string,
+    page: number
+    pageSize: number
+    total: number
+  }
   posts: Array<any>
   loading: boolean
 }
@@ -69,7 +74,7 @@ class PostList extends React.Component<Props, State> {
             loading: false,
           })
         })
-        .catch(err => console.error(err))
+        .catch((err: any) => console.error(err))
   }
 
   handlePaginationChange = (page: number) => {

@@ -1,8 +1,9 @@
 import * as React from 'react'
 import marked from 'marked'
+import _ from 'lodash'
 import { format } from 'date-fns'
 import hljs, { COMMENT } from 'highlight.js'
-import { Link } from 'react-router'
+import { Link, RouteComponentProps } from 'react-router'
 import { Loading } from '../common'
 import { CONF_DATE } from '../../constants/Conf'
 import { scrollTo } from '../../utils/dom'
@@ -11,9 +12,15 @@ import Comment from './Comment'
 marked.setOptions({
   highlight: code => hljs.highlightAuto(code).value,
 })
+type Params = {
+  id: string
+}
 
-interface Props {
-  params: object
+type TagConfig = {
+  _id: string
+  name: string
+}
+interface Props extends RouteComponentProps<Params, void> {
   onFetchPostById: (id: string) => any
   onAddVisitCount: (id: string) => any
   onAddComment: (commnet: any) => any
@@ -61,14 +68,15 @@ class Post extends React.Component<Props, State> {
     scrollTo()
   }
 
-  loadPost = (id?: string) => {
+  loadPost = (id: string = '') => {
     const { params, onFetchPostById, onFetchCommentsByPostId } = this.props
     if (!params.id) {
       throw new Error('post id should be exist')
     }
     id = id || params.id
+
     onFetchPostById &&
-      onFetchPostById(id).then(res => {
+      onFetchPostById(id).then((res: any) => {
         this.setState({
           post: res.post,
           loading: false,
@@ -78,17 +86,17 @@ class Post extends React.Component<Props, State> {
         this.handleVisitCount(id)
       })
 
-    onFetchCommentsByPostId(id).then(res => {
+    onFetchCommentsByPostId(id).then((res: any) => {
       this.setState({
         commentList: res.items,
       })
     })
   }
 
-  handleVisitCount = id => {
+  handleVisitCount = (id: string) => {
     const { onAddVisitCount } = this.props
     onAddVisitCount &&
-      onAddVisitCount(id).then(res => {
+      onAddVisitCount(id).then((res: any) => {
         this.setState({
           visitCount: res.visitCount,
         })
@@ -138,7 +146,7 @@ class Post extends React.Component<Props, State> {
 
   renderTags() {
     const { tags } = this.state.post
-    const tagsItems = tags.map(tag => (
+    const tagsItems = tags.map((tag: TagConfig) => (
       <Link
         to={{
           pathname: '/archives',

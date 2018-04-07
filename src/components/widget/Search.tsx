@@ -13,11 +13,11 @@ class Search extends React.Component {
   handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const { router } = this.context
     // enter
-    if (e.keyCode === 13 && e.target.value !== '') {
+    if (e.keyCode === 13 && e.currentTarget.value !== '') {
       router.push({
         pathname: '/posts',
         query: {
-          word: e.target.value.trim(),
+          word: e.currentTarget.value.trim(),
         },
       })
     }

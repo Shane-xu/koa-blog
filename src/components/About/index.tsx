@@ -26,7 +26,7 @@ class About extends React.Component<Props, State> {
   componentWillMount() {
     const { onFetchAbout } = this.props
     onFetchAbout &&
-      onFetchAbout().then(res => {
+      onFetchAbout().then((res: any) => {
         this.setState({
           about: res.about,
           loading: false,
