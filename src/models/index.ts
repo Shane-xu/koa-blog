@@ -1,0 +1,6 @@
+export { default as IBase } from './Base.model'
+export { default as ICategory } from './Category.model'
+export { default as IComment } from './Comment.model'
+export { default as IPost } from './Post.model'
+export { default as ITag } from './Tag.model'
+export { default as IUser } from './User.model'

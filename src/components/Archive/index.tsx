@@ -7,7 +7,7 @@ import { Pagination, Loading } from '../common'
 import { PAGE, PAGE_SIZE } from '../../constants/Pagination'
 
 interface Props extends RouteComponentProps<void, void> {
-  fetchPosts: (params: any) => any
+  fetchPosts: (params: any) => Promise<object>
 }
 
 interface State {

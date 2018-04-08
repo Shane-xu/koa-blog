@@ -6,19 +6,20 @@ import _ from 'lodash'
 import { Pagination, Loading } from '../common'
 import { CONF_DATE } from '../../constants/Conf'
 import { PAGE, PAGE_SIZE } from '../../constants/Pagination'
+import { IPost } from '../../models'
 
 interface Props extends RouteComponentProps<void, void> {
-  fetchPosts: (params: any) => any
+  fetchPosts: (params: object) => Promise<object>
 }
 
 interface State {
   params: {
-    id: string,
+    id: string
     page: number
     pageSize: number
     total: number
   }
-  posts: Array<any>
+  posts: Array<IPost>
   loading: boolean
 }
 
@@ -89,7 +90,9 @@ class PostList extends React.Component<Props, State> {
         <h1 className="post-title">
           <Link to={{ pathname: `post/${post._id}` }}>{post.title}</Link>
         </h1>
-        <div className="post-meta">{format(post.createTime, CONF_DATE)}</div>
+        <div className="post-meta">
+          {format(post.createTime || '', CONF_DATE)}
+        </div>
         <div className="post-content">
           <p>{post.desc}</p>
         </div>

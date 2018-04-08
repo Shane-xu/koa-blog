@@ -8,6 +8,7 @@ import { Loading } from '../common'
 import { CONF_DATE } from '../../constants/Conf'
 import { scrollTo } from '../../utils/dom'
 import Comment from './Comment'
+import { IPost, IComment, ITag } from '../../models'
 
 marked.setOptions({
   highlight: code => hljs.highlightAuto(code).value,
@@ -16,24 +17,20 @@ type Params = {
   id: string
 }
 
-type TagConfig = {
-  _id: string
-  name: string
-}
 interface Props extends RouteComponentProps<Params, void> {
-  onFetchPostById: (id: string) => any
-  onAddVisitCount: (id: string) => any
-  onAddComment: (commnet: any) => any
-  onFetchCommentsByPostId: (id: string) => any
+  onFetchPostById: (id: string) => Promise<object>
+  onAddVisitCount: (id: string) => Promise<object>
+  onAddComment: (commnet: IComment) => Promise<object>
+  onFetchCommentsByPostId: (id: string) => Promise<object>
 }
 
 interface State {
-  post: any
-  prev: any
-  next: any
+  post?: IPost
+  prev?: IPost
+  next?: IPost
   loading: boolean
   visitCount?: number | null
-  commentList: Array<any>
+  commentList?: Array<IComment>
 }
 
 class Post extends React.Component<Props, State> {
@@ -41,8 +38,8 @@ class Post extends React.Component<Props, State> {
     super(props)
     this.state = {
       post: {},
-      prev: null,
-      next: null,
+      prev: {},
+      next: {},
       loading: true,
       visitCount: null,
       commentList: [],
@@ -105,60 +102,67 @@ class Post extends React.Component<Props, State> {
 
   renderContent() {
     const { post } = this.state
-    if (!post.content) {
+    if (_.isUndefined(post)) {
       return null
+    } else {
+      const content = marked(post.content || '')
+      return (
+        <div
+          className="markdown-body"
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
+      )
     }
-    const content = marked(post.content)
-    return (
-      <div
-        className="markdown-body"
-        dangerouslySetInnerHTML={{ __html: content }}
-      />
-    )
   }
 
   renderMeta() {
     const { post, visitCount } = this.state
+
     return (
-      <div className="post-meta">
-        {format(post.createTime, CONF_DATE)}
-        <span>&nbsp;|&nbsp;</span>
-        <span className="category">
-          <Link
-            to={{
-              pathname: '/archives',
-              query: {
-                category: post.category._id,
-              },
-            }}
-          >
-            {post.category.name}
-          </Link>
-        </span>
-        <span id="leancloud_counter">
-          &nbsp;|&nbsp;
-          <span id="leancloud_value_page_pv">{visitCount}</span>
-          <span> Views</span>
-        </span>
-      </div>
+      post && (
+        <div className="post-meta">
+          {post.createTime && format(post.createTime, CONF_DATE)}
+          <span>&nbsp;|&nbsp;</span>
+          <span className="category">
+            <Link
+              to={{
+                pathname: '/archives',
+                query: {
+                  category: post.category ? post.category._id : '',
+                },
+              }}
+            >
+              {post.category && post.category.name}
+            </Link>
+          </span>
+          <span id="leancloud_counter">
+            &nbsp;|&nbsp;
+            <span id="leancloud_value_page_pv">{visitCount}</span>
+            <span> Views</span>
+          </span>
+        </div>
+      )
     )
   }
 
   renderTags() {
-    const { tags } = this.state.post
-    const tagsItems = tags.map((tag: TagConfig) => (
-      <Link
-        to={{
-          pathname: '/archives',
-          query: {
-            tag: tag._id,
-          },
-        }}
-        key={tag._id}
-      >
-        {tag.name}
-      </Link>
-    ))
+    const { post = {} } = this.state
+    const { tags } = post
+    const tagsItems =
+      tags &&
+      tags.map((tag: ITag) => (
+        <Link
+          to={{
+            pathname: '/archives',
+            query: {
+              tag: tag._id,
+            },
+          }}
+          key={tag._id}
+        >
+          {tag.name}
+        </Link>
+      ))
 
     return <div className="tags">{tagsItems}</div>
   }
@@ -182,7 +186,7 @@ class Post extends React.Component<Props, State> {
   }
 
   renderComment() {
-    const { commentList, post } = this.state
+    const { commentList = [], post = {} } = this.state
     const { onAddComment } = this.props
     return (
       <Comment
@@ -202,7 +206,7 @@ class Post extends React.Component<Props, State> {
     return (
       <div className="content_container">
         <div className="post">
-          <div className="post-title">{post.title}</div>
+          <div className="post-title">{post && post.title}</div>
           {this.renderMeta()}
           <div className="post-content">{this.renderContent()}</div>
           {this.renderTags()}

@@ -4,7 +4,7 @@ import hljs from 'highlight.js'
 import { Loading } from '../common'
 
 interface Props {
-  onFetchAbout: () => any
+  onFetchAbout: () => Promise<object>
 }
 interface AboutConfig {
   _id?: string

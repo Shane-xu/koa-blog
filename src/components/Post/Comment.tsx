@@ -2,24 +2,19 @@ import * as React from 'react'
 import _ from 'lodash'
 import { format } from 'date-fns'
 import { CONF_DATETIME } from '../../constants/Conf'
+import { IComment } from '../../models';
 
 interface Props {
-  post: string
-  commentList: Array<any>
-  addComment: (commnet: any) => any
+  post?: string
+  commentList: Array<IComment>
+  addComment: (commnet: IComment) => Promise<any>
 }
 
 interface State {
-  commentList: Array<any>,
+  commentList: Array<IComment>,
   formData: any
 }
 
-interface CommentConfig {
-  _id: string,
-  name: string,
-  content: string,
-  createdTime: Date,
-}
 
 class Comment extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -49,7 +44,7 @@ class Comment extends React.Component<Props, State> {
     })
   }
 
-  handleQuote = (coomment: CommentConfig) => {}
+  handleQuote = (coomment: IComment) => {}
 
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     const { formData } = this.state
@@ -75,7 +70,7 @@ class Comment extends React.Component<Props, State> {
             {comment.name}
           </a>
           <span className="date">
-            {format(comment.createTime, CONF_DATETIME)}
+            {format(comment.createTime || '', CONF_DATETIME)}
           </span>
           <div className="content">{comment.content}</div>
           <span
